@@ -1,0 +1,32 @@
+{
+  "name": "missubot",
+  "version": "1.0.0",
+  "description": "A bot for the missu discord server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MISSU-Robotics/MISSUBot.git"
+  },
+  "author": "SquarePear",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MISSU-Robotics/MISSUBot/issues"
+  },
+  "homepage": "https://github.com/MISSU-Robotics/MISSUBot#readme",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "mongodb": "^3.1.13"
+  },
+  "devDependencies": {
+    "eslint": "^5.13.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
+  }
+}
