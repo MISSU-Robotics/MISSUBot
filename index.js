@@ -19,3 +19,5 @@ client.on('message', (msg) => {
 logger.log('BOT', 'attempting to log in')
 client.login(secrets.bot)
 logger.log('BOT', 'logged in')
+
+logger.setClient(client)
