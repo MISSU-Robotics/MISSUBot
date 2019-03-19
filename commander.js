@@ -12,26 +12,37 @@ module.exports = class Commander {
 
     this.helpInfo = {}
 
-    fs.readdirSync(`${__dirname}/commands`, { 'encoding': 'utf8' }).forEach((fileName) => {
-      if (fileName.endsWith('.js')) {
-        let command = new (require(`./commands/${fileName}`))(client)
+    fs.readdirSync(`${__dirname}/commands`, { encoding: 'utf8' }).forEach(
+      (fileName) => {
+        if (fileName.endsWith('.js')) {
+          let command = new (require(`./commands/${fileName}`))(client)
 
-        if (!this.helpInfo[command.info.category]) this.helpInfo[command.info.category] = []
+          if (!this.helpInfo[command.info.category]) {
+            this.helpInfo[command.info.category] = []
+          }
 
-        this.helpInfo[command.info.category].push({
-          name: fileName.substring(0, fileName.length - 3).toLowerCase(),
-          description: command.info.description
-        })
+          this.helpInfo[command.info.category].push({
+            name: fileName.substring(0, fileName.length - 3).toLowerCase(),
+            description: command.info.description
+          })
 
-        this.commandScripts[fileName.substring(0, fileName.length - 3).toLowerCase()] = command
+          let commandName = fileName
+            .substring(0, fileName.length - 3)
+            .toLowerCase()
 
-        logger.log('COMMAND', `loaded ${fileName}`)
+          this.commandScripts[commandName] = command
+
+          logger.log('COMMAND', `loaded ${fileName}`)
+        }
       }
-    })
+    )
   }
 
   sendHelp (channel) {
-    let helpEmbed = new Discord.RichEmbed().setTitle('**Help**').setFooter(`#${channel.name}`).setColor(16729344)
+    let helpEmbed = new Discord.RichEmbed()
+      .setTitle('**Help**')
+      .setFooter(`#${channel.name}`)
+      .setColor(16729344)
 
     Object.keys(this.helpInfo).forEach((key) => {
       let category = ''
@@ -49,7 +60,11 @@ module.exports = class Commander {
   runCommand (msg) {
     let msgSplit = msg.content.split(' ')
 
-    let command = msgSplit.shift().trim().substr(1).toLowerCase()
+    let command = msgSplit
+      .shift()
+      .trim()
+      .substr(1)
+      .toLowerCase()
 
     if (command === 'help') {
       this.sendHelp(msg.channel)

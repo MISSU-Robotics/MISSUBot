@@ -6,11 +6,11 @@ const logger = require('./logger')
 const config = require('./config')
 
 module.exports = {
-  'client': null,
-  'setClient': function (botClient) {
+  client: null,
+  setClient: function (botClient) {
     this.client = botClient
   },
-  'init': function () {
+  init: function () {
     Event.find({}, (err, events) => {
       if (err) logger.log('ERROR', `\`\`\`${err}\`\`\``)
 
@@ -23,18 +23,20 @@ module.exports = {
       })
     })
   },
-  'addEvent': function (event) {
+  addEvent: function (event) {
     if (event.date - Date.now() < 0) return false
 
     this.eventTimeouts[event._id] = setTimeout(() => {
-      this.client.channels.get(config.channels.events).send(`@everyone It is ${event.name} time!`)
+      this.client.channels
+        .get(config.channels.events)
+        .send(`@everyone It is ${event.name} time!`)
       logger.log('EVENT', event.name.toLowerCase())
       this.removeEvent(event._id)
     }, event.date - Date.now())
 
     return true
   },
-  'removeEvent': function (eventID) {
+  removeEvent: function (eventID) {
     clearTimeout(this.eventTimeouts[eventID])
     this.eventTimeouts[eventID] = null
 
@@ -58,5 +60,5 @@ module.exports = {
       if (err) logger.log('ERROR', `\`\`\`${err}\`\`\``)
     })
   },
-  'eventTimeouts': {}
+  eventTimeouts: {}
 }

@@ -25,7 +25,9 @@ module.exports = function (client) {
       let out = diceTest.exec(dice)
 
       if (!out) {
-        msg.reply(`Invalid dice \`${dice}\`, use format d(faces)x(count). e.g. \`d20x3\``)
+        msg.reply(
+          `Invalid dice \`${dice}\`, use format d(faces)x(count). e.g. \`d20x3\``
+        )
         invalid = true
         return
       }

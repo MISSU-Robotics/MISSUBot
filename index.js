@@ -18,24 +18,40 @@ client.on('message', (msg) => {
   if (msg.author.bot) return
 
   if (msg.content.startsWith(config.prefix)) {
-    if (Commander.runCommand(msg) === 0) msg.reply(`Command not found! Try ${config.prefix}help to learn about the commands!`)
+    if (Commander.runCommand(msg) === 0) {
+      msg.reply(
+        `Command not found! Try ${
+          config.prefix
+        }help to learn about the commands!`
+      )
+    }
   }
 })
 
 client.on('guildMemberAdd', (member) => {
   if (member.user.bot) return
 
-  User.findOneAndUpdate({ discordID: member.user.id }, { discordID: member.user.id }, { upsert: true }, (err) => {
-    if (err) logger.log('ERROR', `\`\`\`${err}\`\`\``)
-  })
+  User.findOneAndUpdate(
+    { discordID: member.user.id },
+    { discordID: member.user.id },
+    { upsert: true },
+    (err) => {
+      if (err) logger.log('ERROR', `\`\`\`${err}\`\`\``)
+    }
+  )
 })
 
 client.on('presenceUpdate', (member) => {
   if (member.user.bot) return
 
-  User.findOneAndUpdate({ discordID: member.user.id }, { discordID: member.user.id }, { upsert: true }, (err) => {
-    if (err) logger.log('ERROR', `\`\`\`${err}\`\`\``)
-  })
+  User.findOneAndUpdate(
+    { discordID: member.user.id },
+    { discordID: member.user.id },
+    { upsert: true },
+    (err) => {
+      if (err) logger.log('ERROR', `\`\`\`${err}\`\`\``)
+    }
+  )
 })
 
 logger.log('BOT', 'attempting to log in')

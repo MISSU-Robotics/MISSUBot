@@ -78,9 +78,10 @@ function viewEvent (content, msg) {
       eventNames.push(event.name)
     })
 
-    let event = events[stringSimilarity.findBestMatch(content.join(' '), eventNames).bestMatchIndex]
+    let i = stringSimilarity.findBestMatch(content.join(' '), eventNames)
+      .bestMatchIndex
 
-    if (event) msg.channel.send(createEventRichEmbed(event))
+    if (events[i]) msg.channel.send(createEventRichEmbed(events[i]))
     else msg.reply('Event not found!')
   })
 }
@@ -97,10 +98,11 @@ function deleteEvent (content, msg) {
         eventNames.push(event.name)
       })
 
-      let event = events[stringSimilarity.findBestMatch(content.join(' '), eventNames).bestMatchIndex]
+      let i = stringSimilarity.findBestMatch(content.join(' '), eventNames)
+        .bestMatchIndex
 
-      if (event) {
-        EventManager.removeEvent(event._id)
+      if (events[i]) {
+        EventManager.removeEvent(events[i]._id)
         msg.reply('Event removed!')
       } else {
         msg.reply('Event not found!')
