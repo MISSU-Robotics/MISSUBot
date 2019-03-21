@@ -1,8 +1,10 @@
 const { RichEmbed } = require('discord.js')
 const toHex = require('colornames')
 const pokemon = require('pokemon')
-const pokemonGif = require('pokemon-gif')
 const rP = require('request-promise-native')
+const stringSimilarity = require('string-similarity')
+
+const pokeList = pokemon.all()
 
 module.exports = function (client) {
   this.client = client
@@ -16,7 +18,7 @@ module.exports = function (client) {
     let action = content.shift()
     switch (action) {
       case 'gif':
-        getGIF(content, msg)
+        sendGIF(content, msg)
         break
       case undefined:
         msg.channel.send("I DON'T KNOW WHAT TO DO WITH THAT INFORMATION!!!")
@@ -32,8 +34,21 @@ module.exports = function (client) {
 }
 
 function getPokeID (pokemonVal) {
-  if (isNaN(pokemonVal)) return pokemon.getId(pokemonVal)
-  return pokemonVal
+  let val
+  if (isNaN(pokemonVal)) {
+    let similarity = stringSimilarity.findBestMatch(
+      uCFirst(pokemonVal),
+      pokeList
+    )
+    console.log(similarity.bestMatch)
+    if (similarity.bestMatch.rating < 0.75) return 'Invalid Pokémon name!'
+    val = similarity.bestMatchIndex + 1
+  } else {
+    val = parseInt(pokemonVal)
+    if (val <= 0 || val > pokeList.length) return 'Invalid Pokémon id!'
+  }
+
+  return val
 }
 
 function getPokeInfo (id) {
@@ -45,18 +60,18 @@ function getPokeInfo (id) {
   })
 }
 
-// function getExtraPokeInfo (id) {
-//   return rP({
-//     uri: `https://pokeapi.co/api/v2/pokemon/${id}/`,
-//     transform: function (body) {
-//       return JSON.parse(body)
-//     }
-//   })
-// }
+function getGIF (id) {
+  let name = pokeList[id - 1].toLowerCase()
+  return `http://play.pokemonshowdown.com/sprites/xyani/${name}.gif`
+}
 
-function getGIF (content, msg) {
-  let pokemonVal = content.join('')
-  msg.reply(pokemonGif(isNaN(pokemonVal) ? pokemonVal : parseInt(pokemonVal)))
+function sendGIF (content, msg) {
+  let id = getPokeID(content.join(''))
+  if (isNaN(id)) {
+    msg.channel.send(id)
+    return
+  }
+  msg.reply(getGIF(id))
 }
 
 function findByLanguage (object, lang = 'en') {
@@ -71,17 +86,19 @@ function outColor (name) {
 
 function searchPokedex (content, msg) {
   let id = getPokeID(content.join(''))
+  if (isNaN(id)) {
+    msg.channel.send(id)
+    return
+  }
   msg.channel.send('Please wait...').then((newMsg) => {
     getPokeInfo(id).then((pokeInfo) => {
-      // getExtraPokeInfo(id).then((extraPokeInfo) => {
       let embed = new RichEmbed()
         .setAuthor(`#${pokeInfo.id} - ${uCFirst(pokeInfo.name)}`)
         .setTitle(findByLanguage(pokeInfo.genera).genus)
         .setFooter(findByLanguage(pokeInfo.flavor_text_entries).flavor_text)
-        .setImage(pokemonGif(pokeInfo.id))
+        .setImage(getGIF(pokeInfo.id))
         .setColor(outColor(pokeInfo.color.name))
       newMsg.edit(embed)
-      // })
     })
   })
 }
