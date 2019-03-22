@@ -20,11 +20,14 @@ module.exports = function (client) {
       case 'gif':
         sendGIF(content, msg)
         break
-      case undefined:
-        msg.channel.send("I DON'T KNOW WHAT TO DO WITH THAT INFORMATION!!!")
+      case 'random':
+        searchPokedex([pokemon.random()], msg)
         break
       case 'search':
         searchPokedex(content, msg)
+        break
+      case undefined:
+        msg.channel.send("I DON'T KNOW WHAT TO DO WITH THAT INFORMATION!!!")
         break
       default:
         searchPokedex([action], msg)
@@ -40,7 +43,6 @@ function getPokeID (pokemonVal) {
       uCFirst(pokemonVal),
       pokeList
     )
-    console.log(similarity.bestMatch)
     if (similarity.bestMatch.rating < 0.75) return 'Invalid Pokémon name!'
     val = similarity.bestMatchIndex + 1
   } else {
