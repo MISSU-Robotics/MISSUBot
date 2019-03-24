@@ -6,8 +6,11 @@ module.exports = {
     this.client = botClient
   },
   log: function (type, content) {
-    let message = `**[${type.toUpperCase()}]** ${content.toLowerCase()}`
-    console.log(message)
-    if (this.client) { this.client.channels.get(config.channels.commandLog).send(message) }
+    console.log(`[${type.toUpperCase()}] ${content.toLowerCase()}`)
+    if (this.client) {
+      this.client.channels
+        .get(config.channels.commandLog)
+        .send(`**[${type.toUpperCase()}]** ${content.toLowerCase()}`)
+    }
   }
 }

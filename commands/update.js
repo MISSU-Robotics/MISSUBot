@@ -1,4 +1,4 @@
-const autoupdater = require('../autoUpdate')
+const autoupdater = require('../updateManager')
 
 module.exports = function (client) {
   this.client = client
@@ -10,6 +10,8 @@ module.exports = function (client) {
   }
 
   this.run = (content, msg) => {
-    autoupdater.check()
+    msg.channel.send('Checking...').then((newMsg) => {
+      autoupdater.check(newMsg)
+    })
   }
 }

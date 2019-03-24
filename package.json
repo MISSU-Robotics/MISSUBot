@@ -1,6 +1,6 @@
 {
   "name": "missubot",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "A bot for the missu discord server",
   "main": "index.js",
   "scripts": {
@@ -17,12 +17,7 @@
     "url": "https://github.com/MISSU-Robotics/MISSUBot/issues"
   },
   "homepage": "https://github.com/MISSU-Robotics/MISSUBot#readme",
-  "auto-updater": {
-    "repo": "/MISSU-Robotics/MISSUBot",
-    "branch": "master"
-  },
   "dependencies": {
-    "auto-updater": "^1.0.2",
     "chrono-node": "^1.3.5",
     "colornames": "^1.1.1",
     "discord.js": "^11.4.2",
@@ -30,6 +25,7 @@
     "pokemon": "^1.2.3",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
+    "semver": "^5.6.0",
     "string-similarity": "^3.0.0"
   },
   "devDependencies": {

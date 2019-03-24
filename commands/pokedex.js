@@ -30,7 +30,8 @@ module.exports = function (client) {
         msg.channel.send("I DON'T KNOW WHAT TO DO WITH THAT INFORMATION!!!")
         break
       default:
-        searchPokedex([action], msg)
+        content.unshift(action)
+        searchPokedex(content, msg)
         break
     }
   }
@@ -73,7 +74,9 @@ function sendGIF (content, msg) {
     msg.channel.send(id)
     return
   }
-  msg.reply(getGIF(id))
+  msg.channel.send({
+    files: [getGIF(id)]
+  })
 }
 
 function findByLanguage (object, lang = 'en') {
