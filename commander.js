@@ -20,11 +20,12 @@ module.exports = class Commander {
           if (!this.helpInfo[command.info.category]) {
             this.helpInfo[command.info.category] = []
           }
-
-          this.helpInfo[command.info.category].push({
-            name: fileName.substring(0, fileName.length - 3).toLowerCase(),
-            description: command.info.description
-          })
+          if (!command.info.hide) {
+            this.helpInfo[command.info.category].push({
+              name: fileName.substring(0, fileName.length - 3).toLowerCase(),
+              description: command.info.description
+            })
+          }
 
           let commandName = fileName
             .substring(0, fileName.length - 3)

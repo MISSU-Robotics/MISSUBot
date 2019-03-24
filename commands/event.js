@@ -13,7 +13,8 @@ module.exports = function (client) {
 
   this.info = {
     category: 'General',
-    description: 'Create / view an event'
+    description: 'Create / view an event',
+    hide: true
   }
 
   this.run = (content, msg) => {
