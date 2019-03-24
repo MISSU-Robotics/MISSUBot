@@ -16,7 +16,7 @@ function check (msg) {
         if (msg) msg.edit(`Updating to v${gitPackage.version}`)
         resolve(gitPackage)
       } else {
-        if (msg) msg.edit(`Already up to date!`)
+        if (msg) msg.edit(`Already up to date! (v${localPackage.version})`)
         resolve(false)
       }
     })
@@ -29,9 +29,12 @@ function update (gitPackage, msg) {
   let updater = spawn('./update.sh')
 
   updater.on('close', (code) => {
-    msg.edit(`Updated to v${gitPackage.version}`)
-    logger.log('UPDATE', `Updated to v${gitPackage.version}`)
-    process.exit(0)
+    let finish = () => {
+      logger.log('UPDATE', `Updated to v${gitPackage.version}`)
+      process.exit(0)
+    }
+    if (msg) msg.edit(`Updated to v${gitPackage.version}`).then(finish)
+    else finish()
   })
 }
 
