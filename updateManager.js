@@ -16,6 +16,7 @@ function check (msg) {
         if (msg) msg.edit(`Updating to v${gitPackage.version}`)
         resolve(gitPackage)
       } else {
+        if (msg) msg.edit(`Already up to date!`)
         resolve(false)
       }
     })
